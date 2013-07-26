@@ -1,0 +1,7 @@
+# Compiled source #
+###################
+*.js
+
+# Packages #
+############
+node_modules/*
