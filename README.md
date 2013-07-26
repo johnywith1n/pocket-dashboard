@@ -1,7 +1,7 @@
 pocket-dashboard
 ================
 
-A Dashboard for Pocket
+A Dashboard for [Pocket](http://getpocket.com/)
 
 To run, go to the project directory and run:
 
