@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "pocket-dashboard",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,6 +10,5 @@
     "ejs" : "*",
     "coffee-script" : "1.6.3",
     "pouchdb" : "*",
-    "twitter-bootstrap" : "2.1.1"
   }
 }
