@@ -5,6 +5,10 @@ express = require("express")
 routes = require("./routes")
 http = require("http")
 path = require("path")
+fs = require("fs")
+
+@__CONSUMER_KEY__ = fs.readFileSync 'CONSUMER_KEY', 'utf8'
+
 app = express()
 
 # all environments

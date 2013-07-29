@@ -5,3 +5,7 @@
 # Packages #
 ############
 node_modules/*
+
+# Keys #
+############
+CONSUMER_KEY
