@@ -2,12 +2,14 @@
 Module dependencies.
 ###
 express = require("express")
-routes = require("./routes")
 http = require("http")
 path = require("path")
-fs = require("fs")
-
-@__CONSUMER_KEY__ = fs.readFileSync 'CONSUMER_KEY', 'utf8'
+pocketOAuth = require('./routes/pocketOAuth.js')
+routes = {
+        index: require('./routes').index
+        , requestToken: pocketOAuth.requestToken
+        , pocketOAuthCallback : pocketOAuth.pocketOAuthCallback
+    }
 
 app = express()
 
@@ -27,6 +29,9 @@ app.use express.static(path.join(__dirname, "views"))
 app.use express.errorHandler()  if "development" is app.get("env")
 
 app.get "/", routes.index
+app.get "/requestToken", routes.requestToken
+app.get "/pocketOAuthCallback", routes.pocketOAuthCallback
+
 
 http.createServer(app).listen app.get("port"), ->
-  console.log "Express server listening on port " + app.get("port")
+    console.log "Express server listening on port " + app.get("port")

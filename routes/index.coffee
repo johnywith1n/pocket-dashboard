@@ -1,2 +1,2 @@
 exports.index = (req, res) ->
-  res.render "index.html"
+    res.render "index.html"
