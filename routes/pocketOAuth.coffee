@@ -1,6 +1,5 @@
 https = require 'https'
 fs = require "fs"
-open = require "open"
 
 REDIRECT_URI = "http://localhost:3000/pocketOAuthCallback"
 HOST = "getpocket.com"
