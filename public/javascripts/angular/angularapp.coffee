@@ -12,4 +12,8 @@ app.config ($routeProvider, $locationProvider) ->
     $locationProvider.html5Mode true
     return
 
+app.service "PocketService", ($resource) ->
+
+    return
+
 app.controller "AppCtrl", ($scope) ->
