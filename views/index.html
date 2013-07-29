@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html data-ng-app="app">
     <head>
         <meta charset=utf-8 />
         <title>Pocket Dashboard</title>
         <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/style.css" />
         <link rel="stylesheet" type="text/css"  href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -25,6 +22,14 @@
                 </div>
             </div>
         </div>
-        Hello World
+
+        <div data-ng-view>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+        <script type="text/javascript" src="javascripts/angular/angularapp.js"></script>
     </body>
 </html>
