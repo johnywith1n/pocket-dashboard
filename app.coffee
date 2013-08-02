@@ -5,10 +5,12 @@ express = require("express")
 http = require("http")
 path = require("path")
 pocketOAuth = require('./routes/pocketOAuth.js')
+pocketApi = require('./routes/pocketApi.js')
 routes = {
         index: require('./routes').index
         , requestToken: pocketOAuth.requestToken
         , pocketOAuthCallback : pocketOAuth.pocketOAuthCallback
+        , getItemsSince : pocketApi.getItemsSince
     }
 
 app = express()
@@ -29,8 +31,9 @@ app.use express.static(path.join(__dirname, "views"))
 app.use express.errorHandler()  if "development" is app.get("env")
 
 app.get "/", routes.index
-app.get "/requestToken", routes.requestToken
-app.get "/pocketOAuthCallback", routes.pocketOAuthCallback
+app.get "/api/requestToken", routes.requestToken
+app.get "/api/pocketOAuthCallback", routes.pocketOAuthCallback
+app.get "/api/itemsSince", routes.getItemsSince
 
 
 http.createServer(app).listen app.get("port"), ->
