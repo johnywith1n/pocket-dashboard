@@ -1,5 +1,7 @@
 https = require 'https'
 pocketOAuth = require('./pocketOAuth.js')
+db = require('../database.js')
+logger = require('../logger.js').logger
 
 HOST = "getpocket.com"
 GET_PATH = "/v3/get"
@@ -23,6 +25,17 @@ getItemsSince = (callback, since) ->
     authReq.end()
     return
 
+storeDocuments = (json) ->
+    if json.list?
+        for id, obj of json.list
+            obj['_id'] = obj.item_id
+            db.addDoc obj, (err, response) -> 
+                logger.info "storing document" + obj.item_id
+                if err? 
+                    logger.error err 
+                if response?
+                    logger.info response
+
 exports.getItemsSince = (req, res) ->
     callback = (response) ->
         str = ''
@@ -30,9 +43,11 @@ exports.getItemsSince = (req, res) ->
             str += chunk
             return
         response.on 'end', () ->
-        	res.charset = 'utf-8'
-        	res.json JSON.parse str
-        	return
+            res.charset = 'utf-8'
+            json = JSON.parse str
+            storeDocuments json
+            res.json json
+            return
         return
     since = if req.query.since? then req.query.since else 0
     getItemsSince callback, since

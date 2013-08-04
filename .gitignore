@@ -9,3 +9,11 @@ node_modules/*
 # Keys #
 ############
 CONSUMER_KEY
+
+# database #
+############
+database/*
+
+# Logs #
+############
+*.log
