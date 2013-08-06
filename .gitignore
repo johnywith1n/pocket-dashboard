@@ -10,10 +10,6 @@ node_modules/*
 ############
 CONSUMER_KEY
 
-# database #
-############
-database/*
-
 # Logs #
 ############
 *.log

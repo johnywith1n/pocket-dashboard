@@ -28,12 +28,12 @@ getItemsSince = (callback, since) ->
 storeDocuments = (json) ->
     if json.list?
         for id, obj of json.list
-            obj['_id'] = obj.item_id
-            db.addDoc obj, (err, response) -> 
-                logger.info "storing document" + obj.item_id
+            db.insert obj, (err, response) -> 
                 if err? 
+                    logger.error "unable to store document"
                     logger.error err 
                 if response?
+                    logger.info "stored document"
                     logger.info response
 
 exports.getItemsSince = (req, res) ->

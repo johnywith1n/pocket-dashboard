@@ -1,8 +1,7 @@
-Pouch = require('pouchdb')
-db = new PouchDB("database")
+Datastore  = require('nedb')
+db = new Datastore {filename: 'foobar.db', nodeWebkitAppName: 'pocket-dashboard', autoload: true }
 
-exports.addDoc = (doc,callback) ->
-    return db.put doc, callback
+exports.insert = (doc,callback) ->
+    return db.insert doc, callback
 
-exports.getAllDocs = (options, callback) ->
-    return db.allDocs(options, callback)
+
