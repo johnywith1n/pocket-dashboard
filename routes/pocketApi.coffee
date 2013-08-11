@@ -5,8 +5,10 @@ logger = require('../logger.js').logger
 
 HOST = "getpocket.com"
 GET_PATH = "/v3/get"
+MAX_ARTICLES_PER_CALL = 5000
 
-getItemsSince = (callback, since) ->
+
+getItemsSinceWithOffset = (res, offset, since) ->
     options = {
         host : HOST,
         path : GET_PATH,
@@ -16,39 +18,43 @@ getItemsSince = (callback, since) ->
                 'X-Accept' : 'application/json'
         }
     }
-    authReq = https.request options, callback
-    authReq.write JSON.stringify {
-        "consumer_key" : pocketOAuth.consumerKey,
-        "access_token" : pocketOAuth.accessToken,
-        "since" : since,
-    }
-    authReq.end()
-    return
-
-storeDocuments = (json) ->
-    if json.list?
-        for id, obj of json.list
-            db.insert obj, (err, response) -> 
-                if err? 
-                    logger.error "unable to store document"
-                    logger.error err 
-                if response?
-                    logger.info "stored document"
-                    logger.info response
-
-exports.getItemsSince = (req, res) ->
-    callback = (response) ->
+    authReq = https.request options, (response) ->
         str = ''
         response.on 'data', (chunk) ->
             str += chunk
             return
         response.on 'end', () ->
-            res.charset = 'utf-8'
             json = JSON.parse str
-            storeDocuments json
-            res.json json
+            if json.list? and (Object.prototype.toString.call json.list) is "[object Object]"
+                for id, obj of json.list
+                    db.upsertArticle obj
+                getItemsSinceWithOffset res, offset + MAX_ARTICLES_PER_CALL, since
+            else
+                newList = []
+                for id, obj of json.list
+                    newList.push obj
+                json.list = newList.sort (a,b) -> return a.time_added - b.time_added
+                res.charset = 'utf-8'
+                res.json json
+                db.updateLastSinceTimestamp json.since
             return
         return
-    since = if req.query.since? then req.query.since else 0
-    getItemsSince callback, since
+    params = {
+        "state" : "all"
+        "consumer_key" : pocketOAuth.consumerKey,
+        "access_token" : pocketOAuth.accessToken,
+        "sort" : "oldest",
+        "count" : MAX_ARTICLES_PER_CALL,
+        "offset" : offset
+    }
+    if since?
+        params.since = since
+    authReq.write JSON.stringify params
+    authReq.end()
+    return    
+
+exports.getItemsSince = (req, res) ->
+    db.getLastSinceTimestamp (since) ->
+        getItemsSinceWithOffset res, 0, since
+        return
     return
