@@ -43,7 +43,6 @@ getItemsSinceWithOffset = (res, offset, since) ->
         "state" : "all"
         "consumer_key" : pocketOAuth.consumerKey,
         "access_token" : pocketOAuth.accessToken,
-        "sort" : "oldest",
         "count" : MAX_ARTICLES_PER_CALL,
         "offset" : offset
     }
