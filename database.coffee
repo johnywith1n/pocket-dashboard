@@ -17,7 +17,7 @@ exports.upsertArticle = (doc) ->
                 logger.error "Error removing document" + doc.item_id
                 logger.error err
             else
-                logger.info "Removed document: " + doc.item_id
+                logger.info "Removed document: " + doc.item_id + " -  numRemove: " + numRemove
             return
     else
         articlesDb.update {"item_id" : {$in : [doc.item_id]}}, doc,  { upsert: true }, (err, numReplaced, upsert) ->
