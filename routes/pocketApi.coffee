@@ -1,7 +1,7 @@
 https = require 'https'
-pocketOAuth = require('./pocketOAuth.js')
-db = require('../database.js')
-logger = require('../logger.js').logger
+pocketOAuth = require './pocketOAuth.js'
+db = require '../database.js'
+logger = (require '../logger.js').logger
 
 HOST = "getpocket.com"
 GET_PATH = "/v3/get"

@@ -1,5 +1,5 @@
-Datastore  = require('nedb')
-logger = require('./logger.js').logger
+Datastore  = require 'nedb'
+logger = (require './logger.js').logger
 
 articlesDb = new Datastore {filename: 'articles.db', nodeWebkitAppName: 'pocket-dashboard', autoload: true }
 articlesDb.ensureIndex { fieldName: 'item_id' }, (err) ->
@@ -73,4 +73,3 @@ exports.getArticles = (query, callback) ->
             callback docs
         return
     return
-    

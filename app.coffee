@@ -7,6 +7,7 @@ path = require "path"
 pocketOAuth = require './routes/pocketOAuth.js'
 pocketApi = require './routes/pocketApi.js'
 databaseApi = require './routes/databaseApi.js'
+
 routes = {
         index: require('./routes').index
         , requestToken: pocketOAuth.requestToken
