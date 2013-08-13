@@ -53,3 +53,24 @@ exports.getLastSinceTimestamp = (callback) ->
                 callback docs[0].lastSince
         return
     return
+
+exports.getCounts = (query, callback) ->
+    articlesDb.count query, (err, count) ->
+        if err?
+            logger.error "Error getting count for query: " + JSON.stringify query
+            callback 0
+        else
+            callback count
+        return
+    return
+
+exports.getArticles = (query, callback) ->
+    articlesDb.find query, (err, docs) ->
+        if err?
+            logger.error "Error getting articles for query: " + JSON.stringify query
+            callback []
+        else
+            callback docs
+        return
+    return
+    

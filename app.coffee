@@ -1,16 +1,18 @@
 ###
 Module dependencies.
 ###
-express = require("express")
-http = require("http")
-path = require("path")
-pocketOAuth = require('./routes/pocketOAuth.js')
-pocketApi = require('./routes/pocketApi.js')
+express = require "express"
+http = require "http"
+path = require "path"
+pocketOAuth = require './routes/pocketOAuth.js'
+pocketApi = require './routes/pocketApi.js'
+databaseApi = require './routes/databaseApi.js'
 routes = {
         index: require('./routes').index
         , requestToken: pocketOAuth.requestToken
         , pocketOAuthCallback : pocketOAuth.pocketOAuthCallback
         , getItemsSince : pocketApi.getItemsSince
+        , getCounts : databaseApi.getCounts
     }
 
 app = express()
@@ -34,6 +36,7 @@ app.get "/", routes.index
 app.get "/api/requestToken", routes.requestToken
 app.get "/api/pocketOAuthCallback", routes.pocketOAuthCallback
 app.get "/api/itemsSince", routes.getItemsSince
+app.get "/api/getCounts", routes.getCounts
 
 
 http.createServer(app).listen app.get("port"), ->
