@@ -58,7 +58,7 @@ exports.getCounts = (query, callback) ->
     articlesDb.count query, (err, count) ->
         if err?
             logger.error "Error getting count for query: " + JSON.stringify query
-            callback 0
+            callback null
         else
             callback count
         return

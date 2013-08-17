@@ -72,3 +72,12 @@ exports.pocketOAuthCallback = (req, res) ->
         return
     pocketOAuthCallback callback
     return
+
+exports.isAuthorized = (req,res) ->
+    res.charset = 'utf-8'
+    res.json {
+        "status" : "success",
+        "payload" : {
+            "isAuthorized" : typeof exports.accessToken isnt "undefined" and exports.accessToken isnt null
+        }
+    }

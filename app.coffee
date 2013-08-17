@@ -12,6 +12,7 @@ routes = {
         index: require('./routes').index
         , requestToken: pocketOAuth.requestToken
         , pocketOAuthCallback : pocketOAuth.pocketOAuthCallback
+        , isAuthorized : pocketOAuth.isAuthorized
         , getItemsSince : pocketApi.getItemsSince
         , getCounts : databaseApi.getCounts
     }
@@ -36,6 +37,7 @@ app.use express.errorHandler()  if "development" is app.get("env")
 app.get "/", routes.index
 app.get "/api/requestToken", routes.requestToken
 app.get "/api/pocketOAuthCallback", routes.pocketOAuthCallback
+app.get "/api/isAuthorized", routes.isAuthorized
 app.get "/api/itemsSince", routes.getItemsSince
 app.get "/api/getCounts", routes.getCounts
 
