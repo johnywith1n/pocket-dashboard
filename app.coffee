@@ -40,7 +40,7 @@ app.get "/api/pocketOAuthCallback", routes.pocketOAuthCallback
 app.get "/api/isAuthorized", routes.isAuthorized
 app.get "/api/itemsSince", routes.getItemsSince
 app.get "/api/getCounts", routes.getCounts
-
+app.get "/view/:partial", routes.index
 
 http.createServer(app).listen app.get("port"), ->
     console.log "Express server listening on port " + app.get("port")

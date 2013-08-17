@@ -4,12 +4,31 @@ app.config ($routeProvider, $locationProvider) ->
     $routeProvider
     .when('/',
         {
-            templateUrl : "partials/index.html",
+            templateUrl : "/partials/index.html",
             controller : "AppCtrl"
+        }
+    )
+    .when('/view/synch'
+        {
+            templateUrl : "/partials/synch.html",
+            controller : "ArticleSynchController"
         }
     )
     .otherwise redirectTo : '/'
     $locationProvider.html5Mode true
     return
 
+app.service("PocketOAuthService", ($resource) ->
+    this.resources = {
+        "isAuthorized" : $resource '/api/isAuthorized'
+    }
+
+    this.isAuthorized = () ->
+        return this.resources.isAuthorized.get()
+
+)
+
 app.controller "AppCtrl", ($scope) ->
+
+app.controller "ArticleSynchController", ($scope, PocketOAuthService) ->
+    console.log PocketOAuthService.isAuthorized()
