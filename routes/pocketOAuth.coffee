@@ -67,7 +67,9 @@ exports.pocketOAuthCallback = (req, res) ->
             str += chunk
             return
         response.on 'end', () ->
-            exports.accessToken = JSON.parse(str).access_token
+            console.log response.statusCode
+            if response.statusCode is 200
+                exports.accessToken = JSON.parse(str).access_token
             res.redirect CALLBACK_URI
             return
         return
