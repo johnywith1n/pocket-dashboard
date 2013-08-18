@@ -29,5 +29,8 @@ app.service("PocketOAuthService", ($resource) ->
 
 app.controller "AppCtrl", ($scope) ->
 
-app.controller "ArticleSynchController", ($scope, PocketOAuthService) ->
+app.controller "ArticleSynchController", ($scope, PocketOAuthService, $rootElement) ->
     $scope.isAuthorized = PocketOAuthService.isAuthorized()
+
+    $scope.disableRouting = () -> $rootElement.off "click"
+    $scope.enableRouting = () -> $rootElement.on "click"
