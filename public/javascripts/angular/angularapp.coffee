@@ -8,7 +8,7 @@ app.config ($routeProvider, $locationProvider) ->
             controller : "AppCtrl"
         }
     )
-    .when('/view/synch'
+    .when('/view/synch',
         {
             templateUrl : "/partials/synch.html",
             controller : "ArticleSynchController"
@@ -24,7 +24,7 @@ app.service("PocketOAuthService", ($resource) ->
     }
 
     this.isAuthorized = () ->
-        return this.resources.isAuthorized.get()
+        return resources.isAuthorized.get()
 )
 
 app.controller "AppCtrl", ($scope) ->
