@@ -2,6 +2,7 @@ https = require 'https'
 fs = require "fs"
 
 REDIRECT_URI = "http://localhost:3000/api/pocketOAuthCallback"
+CALLBACK_URI = "/view/synch"
 HOST = "getpocket.com"
 REQUEST_PATH = "/v3/oauth/request"
 AUTHORIZE_PATH = "/v3/oauth/authorize"
@@ -67,7 +68,7 @@ exports.pocketOAuthCallback = (req, res) ->
             return
         response.on 'end', () ->
             exports.accessToken = JSON.parse(str).access_token
-            res.redirect '/'
+            res.redirect CALLBACK_URI
             return
         return
     pocketOAuthCallback callback
