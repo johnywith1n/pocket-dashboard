@@ -19,16 +19,15 @@ app.config ($routeProvider, $locationProvider) ->
     return
 
 app.service("PocketOAuthService", ($resource) ->
-    this.resources = {
+    resources = {
         "isAuthorized" : $resource '/api/isAuthorized'
     }
 
     this.isAuthorized = () ->
         return this.resources.isAuthorized.get()
-
 )
 
 app.controller "AppCtrl", ($scope) ->
 
 app.controller "ArticleSynchController", ($scope, PocketOAuthService) ->
-    console.log PocketOAuthService.isAuthorized()
+    $scope.isAuthorized = PocketOAuthService.isAuthorized()
