@@ -25,18 +25,35 @@ getItemsSinceWithOffset = (res, offset, since) ->
             return
         response.on 'end', () ->
             json = JSON.parse str
-            if json.list? and (Object.prototype.toString.call json.list) is "[object Object]"
-                for id, obj of json.list
-                    db.upsertArticle obj
-                getItemsSinceWithOffset res, offset + MAX_ARTICLES_PER_CALL, since
+            statusCode = response.statusCode
+            if statusCode is 200
+                if json.list? and (Object.prototype.toString.call json.list) is "[object Object]"
+                    for id, obj of json.list
+                        db.upsertArticle obj
+                    getItemsSinceWithOffset res, offset + MAX_ARTICLES_PER_CALL, since
+                else
+                    res.charset = 'utf-8'
+                    json = {
+                        "status" : "success",
+                        "payload" : null
+                        }
+                    res.json json
+                    db.updateLastSinceTimestamp json.since
             else
-                newList = []
-                for id, obj of json.list
-                    newList.push obj
-                json.list = newList.sort (a,b) -> return a.time_added - b.time_added
+                switch statusCode
+                    when 400 then error = "Invalid API request. This is probably an error with the app. Please report it on Github along with the log."
+                    when 401 then error = "Problem authenticating user. Please refresh the page and log in again."; delete pocketOAuth["access_token"];
+                    when 403 then error = "Rate limited. Please try again in an hour."
+                    when 503 then error = "Pocket is down. Please try again later."
+                    else error = "Unknown error code " + statusCode + ". Please report it on Github along with the log."
+                logger.error "Error code " + statusCode + ". Response Header: " + JSON.stringify(res.headers)
+                json = {
+                            "status" : "error",
+                            "error" : error,
+                            "statusCode" : statusCode
+                        }
                 res.charset = 'utf-8'
                 res.json json
-                db.updateLastSinceTimestamp json.since
             return
         return
     params = {
