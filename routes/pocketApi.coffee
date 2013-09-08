@@ -24,9 +24,9 @@ getItemsSinceWithOffset = (res, offset, since) ->
             str += chunk
             return
         response.on 'end', () ->
-            json = JSON.parse str
             statusCode = response.statusCode
             if statusCode is 200
+                json = JSON.parse str
                 if json.list? and (Object.prototype.toString.call json.list) is "[object Object]"
                     for id, obj of json.list
                         db.upsertArticle obj
