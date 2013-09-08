@@ -39,7 +39,6 @@ app.controller "ArticleSynchController", ($scope, PocketOAuthService, $rootEleme
     $scope.disableRouting = () -> $rootElement.off "click"
     $scope.enableRouting = () -> $rootElement.on "click"
 
-    $scope.showUpdateStatus = true
     $scope.updateStatusText = ""
 
     $scope.updateArticle = () ->
