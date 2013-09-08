@@ -1,8 +1,11 @@
 <h3>Sync Articles</h3>
 <div data-ng-show="isAuthorized.payload.isAuthorized">
-    Authorized
+	<a class="btn btn-primary" data-ng-click="updateArticle()" href="#">Update Articles</a>
+	<div data-ng-show="showUpdateStatus">
+		{{updateStatusText}}
+	</div>
 </div>
 <div data-ng-hide="isAuthorized.payload.isAuthorized">
     Please authorize and get a access token for the Pocket API. <br>
-    <a class="btn btn-primary" data-ng-mouseenter="disableRouting()" data-ng-mouseleave="enableRouting()" data-ng-click="enableRouting()"href="/api/requestToken">Authorize</a>
+    <a class="btn btn-primary" data-ng-mouseenter="disableRouting()" data-ng-mouseleave="enableRouting()" data-ng-click="enableRouting()" href="/api/requestToken">Authorize</a>
 </div>

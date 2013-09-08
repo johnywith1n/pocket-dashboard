@@ -21,10 +21,14 @@ app.config ($routeProvider, $locationProvider) ->
 app.service("PocketOAuthService", ($resource) ->
     resources = {
         "isAuthorized" : $resource '/api/isAuthorized'
+        "updateArticles" : $resource '/api/itemsSince'
     }
 
     this.isAuthorized = () ->
         return resources.isAuthorized.get()
+
+    this.updateArticles = () ->
+        return resources.updateArticles.get()
 )
 
 app.controller "AppCtrl", ($scope) ->
@@ -34,3 +38,22 @@ app.controller "ArticleSynchController", ($scope, PocketOAuthService, $rootEleme
 
     $scope.disableRouting = () -> $rootElement.off "click"
     $scope.enableRouting = () -> $rootElement.on "click"
+
+    $scope.showUpdateStatus = true
+    $scope.updateStatusText = ""
+
+    $scope.updateArticle = () ->
+        $scope.updateStatusText = "Update in progress..."
+        $scope.updateStatus = PocketOAuthService.updateArticles()
+
+    $scope.$watch 'updateStatus', ((newVal, oldVal) ->
+        if newVal.status?
+            if newVal.status is "success"
+                $scope.updateStatusText = "Finished Update"
+            else
+                $scope.updateStatusText = newVal.error
+    ), true
+
+
+    
+

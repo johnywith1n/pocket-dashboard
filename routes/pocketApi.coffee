@@ -33,11 +33,11 @@ getItemsSinceWithOffset = (res, offset, since) ->
                     getItemsSinceWithOffset res, offset + MAX_ARTICLES_PER_CALL, since
                 else
                     res.charset = 'utf-8'
-                    json = {
+                    result = {
                         "status" : "success",
-                        "payload" : null
+                        "payload" : "Successfuly updated articles."
                         }
-                    res.json json
+                    res.json result
                     db.updateLastSinceTimestamp json.since
             else
                 switch statusCode
@@ -47,13 +47,13 @@ getItemsSinceWithOffset = (res, offset, since) ->
                     when 503 then error = "Pocket is down. Please try again later."
                     else error = "Unknown error code " + statusCode + ". Please report it on Github along with the log."
                 logger.error "Error code " + statusCode + ". Response Header: " + JSON.stringify(res.headers)
-                json = {
+                result = {
                             "status" : "error",
                             "error" : error,
                             "statusCode" : statusCode
                         }
                 res.charset = 'utf-8'
-                res.json json
+                res.json result
             return
         return
     params = {
