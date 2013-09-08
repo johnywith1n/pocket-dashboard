@@ -46,7 +46,7 @@ app.controller "ArticleSynchController", ($scope, PocketOAuthService, $rootEleme
         $scope.updateStatus = PocketOAuthService.updateArticles()
 
     $scope.$watch 'updateStatus', ((newVal, oldVal) ->
-        if newVal.status?
+        if newVal? and newVal.status?
             if newVal.status is "success"
                 $scope.updateStatusText = "Finished Update"
             else
