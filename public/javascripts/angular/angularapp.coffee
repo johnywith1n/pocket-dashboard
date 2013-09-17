@@ -1,4 +1,4 @@
-app = angular.module 'app', ['ngResource', '$strap.directives']
+app = angular.module 'app', ['ngResource', 'ui.route']
 
 app.config ($routeProvider, $locationProvider) ->
     $routeProvider
