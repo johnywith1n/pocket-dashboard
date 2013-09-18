@@ -1,6 +1,7 @@
 # Compiled source #
 ###################
 *.js
+!public/javascripts/angularui/route.js
 
 # Packages #
 ############
