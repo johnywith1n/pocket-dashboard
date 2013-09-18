@@ -31,7 +31,28 @@ app.service("PocketOAuthService", ($resource) ->
         return resources.updateArticles.get()
 )
 
-app.controller "AppCtrl", ($scope) ->
+app.service("DatabaseService", ($resource) ->
+    resources = {
+        "getCounts" : $resource '/api/getCounts'
+        "getArticlesByUrl" : $resource '/api/getArticlesByUrl'
+    }
+
+    this.getCounts = (queryParams) ->
+        return resources.getCounts.get(queryParams)
+
+    this.getArticlesByUrl =  (queryParams) ->
+        return resources.getArticlesByUrl.get(queryParams)
+)
+
+app.controller "AppCtrl", ($scope, DatabaseService) ->
+    $scope.allCount = DatabaseService.getCounts {"status" : "all"}
+    $scope.unreadCount = DatabaseService.getCounts {"status" : "unarchived"}
+    $scope.articlesByUrl = DatabaseService.getArticlesByUrl {"status" : "unarchived"}
+    $scope.articlesByUrlSelector = "unarchived"
+    $scope.updateArticleUrlCount = () ->
+        $scope.articlesByUrl = DatabaseService.getArticlesByUrl {"status" : $scope.articlesByUrlSelector}
+        return
+    return
 
 app.controller "ArticleSynchController", ($scope, PocketOAuthService, $rootElement) ->
     $scope.isAuthorized = PocketOAuthService.isAuthorized()
@@ -52,7 +73,7 @@ app.controller "ArticleSynchController", ($scope, PocketOAuthService, $rootEleme
             else
                 $scope.updateStatusText = newVal.error
     ), true
-
+    return
 
     
 

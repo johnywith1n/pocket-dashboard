@@ -1,1 +1,45 @@
-Hello World
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Article Counts</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tr>
+                        <td></td>
+                        <td>All</td>
+                        <td>Unread</td>
+                    </tr>
+                    <tr>
+                        <td>Number of articles</td>
+                        <td>{{allCount.payload.count}}</td>
+                        <td>{{unreadCount.payload.count}}</td>
+                    </tr>
+                </table>
+            </div>
+            <h3>Article Counts By Website</h3>
+            <div>
+                <label class="checkbox-inline">
+                    <input data-ng-model="articlesByUrlSelector" type="radio" value="all" data-ng-change="updateArticleUrlCount()">
+                    All
+                </label>
+                <label class="checkbox-inline">
+                    <input data-ng-model="articlesByUrlSelector" type="radio" value="unarchived" data-ng-change="updateArticleUrlCount()">
+                   Unread
+                </label>
+            </div>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Website</td>
+                        <td>Article Count</td>
+                    </tr>
+                    <tr data-ng-repeat="urlCount in articlesByUrl.payload.articlesByUrl | orderBy : '-count'">
+                        <td>{{urlCount.url}}</td>
+                        <td>{{urlCount.count}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
