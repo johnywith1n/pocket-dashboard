@@ -10,8 +10,14 @@ To run, go to the project directory and run:
 ``` 
 npm install
 ``` 
-Then start the server with 
+then compile all coffeescript files with:
 
 ``` 
-coffee app.coffee
+coffee -c .
 ``` 
+
+and finally start the server with:
+
+``` 
+node app.js
+```
