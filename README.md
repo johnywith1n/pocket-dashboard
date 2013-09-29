@@ -21,3 +21,7 @@ and finally start the server with:
 ``` 
 node app.js
 ```
+
+================
+
+The primary feature of this dashboard to show a breakdown of saved links by url. You can view the breakdown either by all saved articles, or by unarchived articles.
