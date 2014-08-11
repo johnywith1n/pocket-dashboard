@@ -1,12 +1,3 @@
-# Compiled source #
-###################
-*.js
-!public/javascripts/angularui/route.js
-
-# Packages #
-############
-node_modules/*
-
 # Keys #
 ############
 CONSUMER_KEY
