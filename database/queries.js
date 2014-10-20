@@ -11,7 +11,3 @@ module.exports.getArchived = function () {
 module.exports.getAll = function () {
   return {};
 }
-
-module.exports.getWithUrlRegex = function (urlRegex) {
-  return { resolved_url : urlRegex };
-}
