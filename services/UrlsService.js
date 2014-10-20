@@ -9,3 +9,5 @@ module.exports.HOST = "https://getpocket.com";
 module.exports.REQUEST_PATH = "/v3/oauth/request";
 
 module.exports.AUTHORIZE_PATH = "/v3/oauth/authorize";
+
+module.exports.GET_PATH = "/v3/get";

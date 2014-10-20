@@ -37,9 +37,9 @@ module.exports.pocketOAuthCallback = function () {
   };
 
   return request.postAsync(params).then(function (res) {
-    var response = JSON.parse(res[1]);
-    if (res.accessToken) {
-      return res.accessToken;
+    var body = JSON.parse(res[1]);
+    if (body.access_token) {
+      return body.access_token;
     } else {
       return new Error('Missing accessToken. Response was: ' + res[1]);
     }

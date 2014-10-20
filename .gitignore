@@ -5,3 +5,7 @@ CONSUMER_KEY
 # Logs #
 ############
 *.log
+
+# Databases #
+############
+*.db

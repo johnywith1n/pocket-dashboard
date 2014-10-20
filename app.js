@@ -9,6 +9,8 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var pocketOAuth = require('./routes/PocketOAuthRouter');
+var pocketApi = require('./routes/PocketApiRouter');
+var databaseApi = require('./routes/DatabaseApiRouter');
 
 var app = express();
 
@@ -20,12 +22,13 @@ app.set('view engine', 'html');
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/', pocketOAuth);
+app.use('/', pocketApi);
+app.use('/', databaseApi);
 app.use("/view/:partial", index);
 
 /// catch 404 and forward to error handler

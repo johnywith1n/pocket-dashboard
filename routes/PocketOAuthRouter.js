@@ -5,6 +5,7 @@ var router = express.Router();
 var Keys = require('../services/KeysService');
 var Urls = require('../services/UrlsService');
 var PocketOAuth = require('../services/PocketOAuthService');
+var logger = require('../logger').logger;
 
 router.get('/api/requestToken', function (req, res) {
   PocketOAuth.requestToken().then(function (code) {
@@ -12,8 +13,8 @@ router.get('/api/requestToken', function (req, res) {
     res.redirect('https://getpocket.com/auth/authorize?request_token=' + Keys.requestToken +
       '&redirect_uri=' + encodeURIComponent(Urls.REDIRECT_URI));
   }).catch(function (e) {
-    console.error(e);
-    res.send(500, e);
+    logger.error(e);
+    res.status(500).send(e);
   });
 });
 
@@ -22,8 +23,8 @@ router.get('/api/pocketOAuthCallback', function (req, res) {
     Keys.accessToken = accessToken;
     res.redirect(Urls.CALLBACK_URI);
   }).catch(function (e) {
-    console.error(e);
-    res.send(500, e);
+    logger.error(e);
+    res.status(500).send(e);
   });
 });
 
