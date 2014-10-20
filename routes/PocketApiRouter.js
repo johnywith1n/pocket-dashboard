@@ -71,7 +71,7 @@ function getItemsSinceWithOffset (res, offset, since) {
 router.get('/api/itemsSince', function (req, res) {
   res.charset = 'utf-8';
 
-  db.getLastSinceTimestamp(function (since) {
+  db.getLastSinceTimestamp().then(function (since) {
     getItemsSinceWithOffset(res, 0, since);
   });
 });

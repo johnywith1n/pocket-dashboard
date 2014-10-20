@@ -2,94 +2,75 @@
 
 var Datastore = require('nedb');
 var logger = require('../logger.js').logger;
+var Promise = require("bluebird");
 
-var articlesDb = new Datastore({
+var articlesDb = Promise.promisifyAll(new Datastore({
   filename: 'articles.db',
   autoload: true
-});
+}));
 
-var metadataDb = new Datastore({
+var metadataDb = Promise.promisifyAll(new Datastore({
   filename: 'metadata.db',
   autoload: true
-});
+}));
 
-articlesDb.ensureIndex({ fieldName: 'item_id' }, function (err) {
-  if (err) {
-    logger.error("Articles database index constraint error");
-    logger.error(err);
-  }
+articlesDb.ensureIndexAsync({ fieldName: 'item_id' }).catch(function (err) {
+  logger.error("Articles database index constraint error");
+  logger.error(err);
 });
 
 module.exports.updateArticle = function (doc) {
   if (doc.status === '2') {
-    articlesDb.remove({ 'item_id' : { $in : [doc.item_id] } }, function (err, numRemoved) {
-      if (err) {
-        logger.error('Error removing document' + doc.item_id);
-        logger.error(err);
-      } else {
-        logger.info('Removed document: ' + doc.item_id + ' -  numRemove: ' + numRemoved);
-      }
+    articlesDb.removeAsync({ 'item_id' : { $in : [doc.item_id] } }).then(function (numRemoved) {
+      logger.info('Removed document: ' + doc.item_id + ' -  numRemove: ' + numRemoved);
+    }).catch(function (err) {
+      logger.error('Error removing document' + doc.item_id);
+      logger.error(err);
     });
   } else {
-    articlesDb.update({ 'item_id' : {$in : [doc.item_id] } },
-      doc, { upsert: true }, function (err, numReplaced, upsert) {
-      if (err) {
-        logger.error('Error inserting document' + doc.item_id);
-        logger.error(err);
-      } else {
-        logger.info('Inserted document: ' + doc.item_id);
-        logger.info('numReplaced : ' + numReplaced + ' - upsert : ' + upsert);
-      }
+    articlesDb.updateAsync({ 'item_id' : {$in : [doc.item_id] } }, doc, { upsert: true }).then(function (res) {
+      var numReplaced, upsert;
+
+      numReplaced = res[0];
+      upsert = res[1];
+
+      logger.info('Inserted document: ' + doc.item_id);
+      logger.info('numReplaced : ' + numReplaced + ' - upsert : ' + upsert);
+    }).catch(function (err) {
+      logger.error('Error inserting document' + doc.item_id);
+      logger.error(err);
     });
   }
 }
 
 module.exports.updateLastSinceTimestamp = function (time) {
-  metadataDb.update({ 'lastSince' : { $exists : true } }, { 'lastSince' : time },
-    { upsert: true }, function (err, numReplaced, upsert) {
-    if (err) {
-      logger.error('Error updating the timestamp for last retrieving articles' + time);
-      logger.error(err);
+  metadataDb.updateAsync({ 'lastSince' : { $exists : true } }, { 'lastSince' : time },
+    { upsert: true }).then(function () {
+    logger.info('Updated last since timestamp for retrieving articles: ' + time);
+  }).catch(function (err) {
+    logger.error('Error updating the timestamp for last retrieving articles' + time);
+    logger.error(err);
+  });
+}
+
+module.exports.getLastSinceTimestamp = function () {
+  return metadataDb.findAsync({ 'lastSince' : { $exists : true } }).then(function (docs) {
+    if (docs.length === 0) {
+      return null;
     } else {
-      logger.info('Updated last since timestamp for retrieving articles: ' + time);
+      return docs[0].lastSince;
     }
+  }).catch(function (err) {
+    logger.error('Error find last since timestamp');
+    logger.error(err);
+    return null;
   });
 }
 
-module.exports.getLastSinceTimestamp = function (cb) {
-  metadataDb.find({ 'lastSince' : { $exists : true } }, function (err, docs) {
-    if (err) {
-      logger.error('Error find last since timestamp');
-      logger.error(err);
-      cb(null);
-    } else {
-      if (docs.length === 0) {
-        cb(null);
-      } else{
-        cb(docs[0].lastSince);
-      }
-    }
-  });
+module.exports.getCounts = function (query) {
+  return articlesDb.countAsync(query);
 }
 
-module.exports.getCounts = function (query, cb) {
-  articlesDb.count(query, function (err, count) {
-    if (err) {
-      logger.error('Error getting count for query: ' + JSON.stringify(query));
-      cb(null);
-    } else{
-      cb(count);
-    }
-  });
-}
-
-module.exports.getArticles = function (query, cb) {
-  articlesDb.find(query, function (err, docs) {
-    if (err) {
-      logger.error('Error getting articles for query: ' + JSON.stringify(query));
-      cb([]);
-    } else{
-      cb(docs);
-    }
-  });
+module.exports.getArticles = function (query) {
+  return articlesDb.findAsync(query);
 }

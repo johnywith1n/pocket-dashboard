@@ -31,8 +31,8 @@ router.get('/api/pocketOAuthCallback', function (req, res) {
 router.get('/api/isAuthorized', function (req, res) {
   res.charset = 'utf-8';
   return res.json({
-    "status": "success",
-    "payload": { isAuthorized: PocketOAuth.isAuthorized() }
+    'status': 'success',
+    'payload': { isAuthorized: PocketOAuth.isAuthorized() }
   });
 });
 
