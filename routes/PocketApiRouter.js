@@ -56,7 +56,7 @@ function getItemsSinceWithOffset (res, offset, since) {
 
       logger.error('Error code ' + statusCode + '. Response Header: ' + JSON.stringify(res.headers));
 
-      res.json({
+      res.status(statusCode).json({
         'status' : 'error',
         'error' : error,
         'statusCode' : statusCode
