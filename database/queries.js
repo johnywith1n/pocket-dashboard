@@ -1,17 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
-
-module.exports.combineQueries = function (queries) {
-  var result = {};
-
-  _.forEach(queries, function (query) {
-    _.merge(result, query);
-  });
-
-  return result;
-}
-
 module.exports.getUnarchived = function () {
   return { status: '0' };
 }
